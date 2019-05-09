@@ -1,0 +1,264 @@
+<% include ../partials/head %>
+
+    <main class="slds-card">
+
+       <div class="slds-grid slds-wrap slds-grid_pull-padded">
+            <div class="slds-p-horizontal_small slds-size_8-of-12">
+                
+                <% include ../partials/progress %>
+                <div class="slds-card">
+                        <div class="slds-text-heading_medium"><%- steps[step].title %></div>
+                        <div class="slds-text-body_regular">
+                                <%- steps[step].body %>
+                        </div><br/>
+                        <center><button class="slds-button slds-button_brand" onclick="launch();"><%- steps[step].button %></button></center>                                          
+                        <br/>               
+                        <button id="nextstepbtn" class="slds-button slds-button_brand slds-hide" onclick="window.location.href='/?action=nextstep&step=<%= step+1 %>'">Next Step</button>          
+                </div> 
+
+                <div id="errorBlock" style="display: none;">
+                    <div class="slds-notify_container slds-is-relative slds-m-bottom_large sfdx-wrap">
+
+                        <div class="slds-notify slds-notify_toast slds-theme_error" role="alert">
+                            <span class="slds-assistive-text">Error</span>
+
+                            <div class="slds-notify__content">
+                                <h2 class="slds-text-heading_small ">
+                                    <strong id="errorTest">An error occurred while deploying.</strong>&nbsp;See the browser console logs for more
+                                    information.
+                                </h2>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <%if(deployId!=''){%> Deployment status for:<%}%> 
+                <strong id="deployId"><%= deployId %></strong>
+                    <%if(deployId!=''){%>
+                        <img id="spinner" src="../dist/assets/images/loader.gif" style="width:27px;" />
+                        <div id="status" class="slds-m-bottom_small sfdx-output"></div>
+                    <%}%>
+
+            </div>
+            <div class="slds-size_4-of-12 slds-theme_shade" style="border: 1px solid #d8dde6;border-radius: 0.25rem;">
+                <div class="slds-card__header slds-grid">
+                    <header class="slds-has-flexi-truncate">
+                        <h2>
+                            <span class="slds-text-heading_small">Org infos</span>
+                        </h2>
+                    </header>
+                </div>
+                <div class="slds-card__body slds-card__body_inner">
+                    <p id="noorg">No Active Organisation</p>
+
+                    <article class="slds-tile" id="passwordBlock" style="display: none;">
+                        <h3 class="slds-tile__title slds-truncate" title="Login to Org">Credentials</h3>
+                        <div class="slds-tile__detail">
+                            <dl class="slds-list_horizontal slds-wrap">
+                                <dt class="slds-item_label slds-text-color_weak" title="First Label">Username:</dt>
+                                <dd class="slds-item_detail" title="Description for first label" id="username"></dd>
+                                <dt class="slds-item_label slds-text-color_weak" title="Second Label">Password:</dt>
+                                <dd class="slds-item_detail" title="Description for second label" id="password"></dd>
+                                <dt class="slds-item_label slds-text-color_weak" title="Second Label">Instance Url:</dt>
+                                <dd class="slds-item_detail" title="Description for second label" id="instanceUrl"></dd>
+                            </dl>
+                        </div>
+                    </article>
+                    <article class="slds-tile" id="loginBlock" style="display: none;">
+                            <div class="slds-tile__detail">
+                                <center>   
+                                    <a href="" id="loginUrl" target="_blank" class="slds-button slds-button_brand">Open</a>
+                                </center>
+                            </div>
+                    </article>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <article class="slds-tile">
+                        <h3 class="slds-tile__title slds-truncate" title="Login to Org">In last resort, start over! </h3>    
+                        <div class="slds-tile__detail">
+                                <center>   
+                                        <button onclick="reinit();" class="slds-button slds-button_destructive">Re-init</button>
+                                </center>
+                            </div>
+                    </article>
+                    
+                </div>
+            </div>
+        </div>
+
+        <script>
+            const deployIdInput = document.getElementById('deployId');
+            console.log('deployIdInput', deployIdInput);
+
+            const deployId = deployIdInput.innerText;
+            console.log('deployId', deployId);
+            // works for both http and https
+            let protoc = location.protocol=='https:'?'wss':'ws';
+            const HOST = protoc+'://' + location.hostname + ':' + location.port + '/deploying/' + deployId;//location.href.replace(/^http/, 'ws');
+            let msgCounter = 0;
+            console.log('host', HOST);
+
+            var username=localStorage.getItem('username');
+            var password=localStorage.getItem('password');
+            var loginUrl=localStorage.getItem('loginUrl');
+            var instanceUrl=localStorage.getItem('instanceUrl');
+            if(username!=null && password!=null && loginUrl!=null){
+                document.getElementById("username").innerHTML = username;
+                document.getElementById("password").innerHTML = password;
+                document.getElementById("instanceUrl").innerHTML = instanceUrl;
+                document.getElementById("passwordBlock").setAttribute("style", "display : block");
+                document.getElementById("loginUrl").href=loginUrl;
+                document.getElementById("noorg").setAttribute("style", "display : none");
+                document.getElementById("loginBlock").setAttribute("style", "display : block");
+            }
+
+
+            if (typeof deployId != 'undefined' && deployId != null && deployId != '') {
+                const ws = new WebSocket(HOST);
+                let pinger;
+
+                // const deployId = deployIdInput.value;
+
+                // console.log(deployId);
+
+                ws.onmessage = function (event) {
+                    msgCounter++;
+                    // console.log(event);
+                    let parsedData;
+                    try {
+                        parsedData = JSON.parse(event.data);
+                    } catch (err) {
+                        console.log('unparseable message (not JSON)');
+                        console.log(event.data);
+                    }
+                    if (parsedData) {
+                        if (parsedData.deployId === deployId) {
+                            console.log(parsedData);
+                            displayContent(parsedData.content);
+                        } else {
+                            console.log('not mine');
+                            console.log(parsedData);
+                        }
+                    }
+                };
+
+                ws.onopen = function () {
+                    console.log('WS is open!');
+                    pinger = setInterval(function () {
+                        ws.send('ping');
+                    }, 5000);
+                };
+
+                ws.onclose = function () {
+                    console.log('WS is closing');
+                    clearInterval(pinger);
+                }
+            }
+            displayContent = function (content) {
+                // the login url
+                if (content.includes('Permsets Assigned') || content.includes('Duplicate PermissionSetAssignment')) {
+                    defaultContent('Assigned Perm Sets (see console logs for details)');
+                } else if (content.includes('ERROR')) {
+                    console.log('an error occurred');
+                    console.log(content);
+                    document.getElementById("errorBlock").setAttribute("style", "display : block");
+                } else if (content.includes('secur/frontdoor')) {
+                    console.log('This is the login url in JSON');
+                    let goodstuff = JSON.parse(content);
+                    var link = document.getElementById("loginUrl");
+                    link.href = goodstuff.result.url;
+                    localStorage.setItem("loginUrl",goodstuff.result.url);
+                    document.getElementById("noorg").setAttribute("style", "display : none");
+                    document.getElementById("loginBlock").setAttribute("style", "display : block");
+                } else if (content.includes('password')) {
+                    let goodstuff = JSON.parse(content);
+                    document.getElementById("password").innerHTML = goodstuff.result.password;
+                    localStorage.setItem("password",goodstuff.result.password);
+                    document.getElementById("passwordBlock").setAttribute("style", "display : block");
+                    defaultContent('Password Generated');
+                } else if (content.includes('pushedSource')) {
+
+                    defaultContent('Source Pushed');
+                    // // let's create an array to share
+                    // var element = document.getElementById("status");
+                    // var para = document.createElement("p");
+                    // para.classList.add('slds-m-vertical_medium');
+                    // var ul = document.createElement("ul");
+                    // ul.classList.add('slds-list_vertical');
+
+                    // let goodstuff = JSON.parse(content);
+                    // for (let line of goodstuff.result.pushedSource){
+                    // 	var li = document.createElement("li");
+                    // 	var node = document.createTextNode(line.state + ' ' + line.fullName + ' (' + line.type + ')' );
+                    // 	li.appendChild(node);
+                    // 	ul.appendChild(li);
+                    // }
+                    // para.appendChild(ul);
+                    // var element = document.getElementById("status");
+                    // element.appendChild(para);
+                    //refId
+                } else if (content.includes('Import Results')) {
+                    defaultContent('Loaded some data (see console logs for details)');
+                } else if (content.includes('EXECUTION_FINISHED')) {
+                    defaultContent('Executed Apex (see console logs for details)');
+                } else if (content.includes('username') && content.includes('orgId')) {
+                    let goodstuff = JSON.parse(content);
+                    document.getElementById("username").innerHTML = goodstuff.result.username;
+                    localStorage.setItem("username",goodstuff.result.username);
+                    defaultContent('Scratch org created with username ' + goodstuff.result.username);
+                } else if (content.includes('accessToken')) {
+                    let goodstuff = JSON.parse(content);
+                    console.log(goodstuff);
+                    localStorage.setItem("accessToken",goodstuff.result.accessToken);
+                    localStorage.setItem("instanceUrl",goodstuff.result.instanceUrl);
+                    document.getElementById("instanceUrl").innerHTML = goodstuff.result.instanceUrl;
+                }else if (content.includes('ALLDONE')) {
+                    document.getElementById("nextstepbtn").setAttribute("style", "display : block");
+                    document.getElementById("spinner").setAttribute("style", "display : none");
+                } else if (content.includes('instanceUrl')) {
+                   msgCounter--;
+                }
+                else if (content.includes('=== Source Status')) {
+                   msgCounter--;
+                }else {
+                    // everything unspecified
+                    defaultContent(content);
+                }
+
+            }
+            
+
+
+            defaultContent = function (content) {
+                var para = document.createElement("p");
+                para.classList.add('slds-m-vertical_medium');
+                var node = document.createTextNode(msgCounter + '. ' + content);
+                para.appendChild(node);
+
+                var element = document.getElementById("status");
+                element.appendChild(para);
+            }
+
+            var reinit = function(){
+                localStorage.clear();
+                document.getElementById("username").innerHTML = '';
+                document.getElementById("password").innerHTML = '';
+                document.getElementById("passwordBlock").setAttribute("style", "display : none");
+                document.getElementById("loginUrl").href='';
+                document.getElementById("noorg").setAttribute("style", "display : block");
+                document.getElementById("loginBlock").setAttribute("style", "display : none");
+                window.location.href='/?action=nextstep&step=0';
+            }
+  
+            var launch=function(){
+                window.location.href='/?action=deploy&step=<%= step%>&SOusername='+localStorage.getItem("username");
+            }
+
+
+        </script>
+        
+
+    </main>
+    <% include ../partials/footer %>

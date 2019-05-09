@@ -1,0 +1,39 @@
+{
+  "name": "SFDX Workshop Deployer",
+  "description": "An application that will deploy SFDX project from a public Github repo branches step by steps",
+  "repository": "https://github.com/mjacquet/deploy-to-sfdx",
+  "keywords": ["deploy", "sfdx", "salesforcedx"],
+  "env": {
+    "DXLOGINURL": {
+      "description": "The DX URL to authenticate Dev Hub (use sfdx force:org:display --verbose to get it).",
+      "value": ""
+    },
+    "GIT_REPOURL": {
+      "description": "The link to the base SFDX project repo (e.g: https://github.com/mjacquet/gestion-embauche)",
+      "value": ""
+    }
+  },
+  "formation": [
+    {
+      "type" : "web",
+      "quantity": 1,
+      "size": "hobby"
+    },
+    {
+      "type" :"worker",
+      "quantity" : 1,
+      "size" : "hobby"
+    }
+  ],
+  "buildpacks": [{
+      "url": "https://github.com/wadewegner/salesforce-cli-buildpack"
+    },
+    {
+      "url": "heroku/nodejs"
+    }
+  ],
+  "addons": [{
+      "plan": "cloudamqp:lemur"
+  },
+  "heroku-redis"]
+}
