@@ -1,5 +1,5 @@
 # SFDX "Workshop Automator"
-Issue with sfdx-cli update - 20190722
+Issue with sfdx-cli update - 20190910
 
 ## Issue while updating Salesforce sfdx-cli.
 git remote rm origin
