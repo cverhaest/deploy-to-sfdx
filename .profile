@@ -7,9 +7,6 @@ export PATH=$PATH:/app/.local/share/sfdx/cli/bin/
 echo "Updating Salesforce CLI plugin ..."
 sfdx update
 
-echo "Installing shane-sfdx-plugins ..."
-sfdx plugins:install shane-sfdx-plugins
-
 echo "Creating local resources ..."
 mkdir /app/tmp
 
