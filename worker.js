@@ -16,8 +16,7 @@ logger.debug('I am a worker and I am up! yeah !');
 
 // load helpful plugins in cloud only
 let cmd='pwd';
-//if(process.env.DXLOGINURL)cmd='echo y | sfdx plugins:install shane-sfdx-plugins'
-if(process.env.DXLOGINURL)cmd='echo y | npm install -g shane-sfdx-plugins'
+if(process.env.DXLOGINURL)cmd='echo y | sfdx plugins:install shane-sfdx-plugins'
 exec(cmd)
 // auth to the hub
 .then( (result) => {
