@@ -4,7 +4,7 @@
   "description": "An application that will deploy an SFDX project from a public Github repo",
   "main": "web.js",
   "engines": {
-    "node": "8.9.0"
+    "node": "8.10.0"
   },
   "scripts": {
     "start": "node .",
@@ -23,7 +23,6 @@
   "homepage": "https://github.com/mshanemc/deploy-to-sfdx#readme",
   "dependencies": {
     "@salesforce-ux/design-system": "^2.3.1",
-    "shane-sfdx-plugins": "^4.9.4",
     "amqplib": "^0.5.1",
     "async": "^2.5.0",
     "body-parser": "^1.17.2",
