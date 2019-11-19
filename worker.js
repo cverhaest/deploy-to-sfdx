@@ -16,7 +16,7 @@ logger.debug('I am a worker and I am up! yeah !');
 
 // load helpful plugins in cloud only
 let cmd='pwd';
-// CVER working with an old version of shane plugins
+// CVER working with an old version of shane plugins - https://github.com/mshanemc/shane-sfdx-plugins/releases cloned to https://github.com/cverhaest/shane-sfdx-plugins-3.23.0.git
 //if(process.env.DXLOGINURL)cmd='echo y | sfdx plugins:install shane-sfdx-plugins'
 if(process.env.DXLOGINURL)cmd='echo y | sfdx plugins:install https://github.com/cverhaest/shane-sfdx-plugins-3.23.0.git'
 exec(cmd)
