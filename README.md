@@ -1,5 +1,5 @@
 # SFDX "Workshop Automator"
-Issue with sfdx-cli update - 20211027
+Issue with sfdx-cli update - 20211026
 apps running on the Heroku-16 stack, which reaches end-of-life on May 1st, 2021. - 20210309
 On March 10, 2021, we announced the Heroku Redis Hobby Tier Version Deprecation - 20210426
 
