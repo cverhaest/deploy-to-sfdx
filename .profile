@@ -5,7 +5,8 @@ echo "Updating PATH to include Salesforce CLI ..."
 export PATH=$PATH:/app/.local/share/sfdx/cli/bin/
 
 echo "Updating Salesforce CLI plugin ..."
-sfdx update
+# CVER - Added to prevent update of sfdx
+#sfdx update
 
 echo "Creating local resources ..."
 mkdir /app/tmp
