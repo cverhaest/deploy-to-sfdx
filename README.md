@@ -20,6 +20,10 @@ git push heroku master
 heroku git:remote -a sfdxappwizard-en
 git push heroku master
 
+## Deleting a specific scratch org using sfdx-cli
+sfdx auth:web:login -d -a myscratchorg --instanceurl https://test.salesforce.com
+sfdx force:org:delete -u #scratchorg_username#
+
 ## Purpose
 
 You have a dev hub, and an sfdx repo.  You'd like to let people spin up scratch orgs based on the repo, and have step by step approach to define the metadata, based on github  branches. In addition, you audience doesn't have any access to a devhub or the CLI:
