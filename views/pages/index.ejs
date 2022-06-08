@@ -172,9 +172,16 @@
                 if (content.includes('Permsets Assigned') || content.includes('Duplicate PermissionSetAssignment')) {
                     defaultContent('Assigned Perm Sets (see console logs for details)');
                 } else if (content.includes('ERROR')) {
-                    console.log('an error occurred');
-                    console.log(content);
-                    document.getElementById("errorBlock").setAttribute("style", "display : block");
+                	// CVER - 20220607 - Do not display an error if this is related to a "DeprecationWarning" of nodejs
+                	if(!content.includes('DeprecationWarning')){
+                    	console.log('An error occurred');
+                    	console.log(content);
+                    	document.getElementById("errorBlock").setAttribute("style", "display : block");
+                	}
+                	else{
+                		console.log('A DeprecationWarning error occurred');
+                    	console.log(content);
+                	}    	
                 } else if (content.includes('secur/frontdoor')) {
                     console.log('This is the login url in JSON');
                     let goodstuff = JSON.parse(content);
