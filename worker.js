@@ -12,7 +12,7 @@ const lineParse = require('./lib/lineParse');
 const setTimeoutPromise = util.promisify(setTimeout);
 const ex = 'deployMsg';
 
-logger.debug('I am a worker and I am up! yeah !');
+logger.info('I am a worker and I am up! yeah !');
 
 // load helpful plugins in cloud only
 let cmd='pwd';
