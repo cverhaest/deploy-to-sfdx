@@ -109,8 +109,9 @@
             // CVER - 20220608 - Issue with instanceUrl which doesn't really exist
             const indexOfCom = loginUrl.indexOf('.com/');
             console.log('### CVER - indexOfCom:', indexOfCom);
+            //var instanceUrl=localStorage.getItem('instanceUrl');
+            var instanceUrl=loginUrl.substring(0, indexOfCom + 4);
             
-            var instanceUrl=localStorage.getItem('instanceUrl');
             if(username!=null && password!=null && loginUrl!=null){
                 document.getElementById("username").innerHTML = username;
                 document.getElementById("password").innerHTML = password;
