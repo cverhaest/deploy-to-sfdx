@@ -1,14 +1,17 @@
 # SFDX "Workshop Automator"
 
-Command lines : 
-heroku run bash --app sfdxappwizard or heroku run bash --app sfdxappwizard-en
-sfdx update
-
 Issue with sfdx-cli update - 20220602
 apps running on the Heroku-16 stack, which reaches end-of-life on May 1st, 2021. - 20210309
 On March 10, 2021, we announced the Heroku Redis Hobby Tier Version Deprecation - 20210426
 
 ## Issue while updating Salesforce sfdx-cli.
+Removed automatic sfdx update from .procfile
+
+Command lines to run manually: 
+heroku run bash --app sfdxappwizard or heroku run bash --app sfdxappwizard-en
+sfdx update
+
+## Update Heroku app
 git remote rm origin
 git remote add origin https://github.com/cverhaest/deploy-to-sfdx.git
 git add .
