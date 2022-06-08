@@ -99,6 +99,8 @@
             const HOST = protoc+'://' + location.hostname + ':' + location.port + '/deploying/' + deployId;//location.href.replace(/^http/, 'ws');
             let msgCounter = 0;
             console.log('host', HOST);
+            
+            console.log('### CVER - localStorage:', localStorage);
 
             var username=localStorage.getItem('username');
             var password=localStorage.getItem('password');
