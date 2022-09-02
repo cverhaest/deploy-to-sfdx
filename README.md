@@ -1,5 +1,6 @@
 # SFDX "Workshop Automator"
 
+Issue with "CLOUDAMQP_APIKEY" value - The value had to be recovered from the URL of the "CloudAMQP" add-on - 20220902
 Issue with sfdx-cli update - 20220902
 Upgrading to the Latest Heroku Stack - 20220902
 Apps running on the Heroku-16 stack, which reaches end-of-life on May 1st, 2021. - 20210309
@@ -142,3 +143,4 @@ In each branch, you will need to have:
 ## Example Repos with all necessary files and branches
 
 https://github.com/cverhaest/sfdx-travelApprovalAPP-EN.git
+
