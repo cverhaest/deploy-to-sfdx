@@ -1,9 +1,21 @@
 # SFDX "Workshop Automator"
 
+Issue with Redis TSL/SSL - 20220905
+
 Issue with "CLOUDAMQP_APIKEY" value - The value had to be recovered from the URL of the "CloudAMQP" add-on - 20220902
+sfdxappwizard
+old value: 0364ebea-6cdc-4a39-aeb4-0e5c2e9114a8
+new value: ee372103-926b-4d28-9213-38e31e705b69
+sfdxappwizard-en
+old value: a504c760-617e-4ae6-83b4-7f7a21159f75
+new value: cc0fbdc1-2cd0-4861-ab8f-f7ebfee65680
+
 Issue with sfdx-cli update - 20220902
+
 Upgrading to the Latest Heroku Stack - 20220902
+
 Apps running on the Heroku-16 stack, which reaches end-of-life on May 1st, 2021. - 20210309
+
 On March 10, 2021, we announced the Heroku Redis Hobby Tier Version Deprecation - 20210426
 
 ## Issue while updating Salesforce sfdx-cli.
