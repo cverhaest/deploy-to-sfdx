@@ -1,5 +1,7 @@
 # SFDX "Workshop Automator"
 
+Issue with sfdx-cli update - 20220928
+
 Issue with Redis TSL/SSL - 20220905
 
 Issue with "CLOUDAMQP_APIKEY" value - The value had to be recovered from the URL of the "CloudAMQP" add-on - 20220902
@@ -9,8 +11,6 @@ new value: ee372103-926b-4d28-9213-38e31e705b69
 sfdxappwizard-en
 old value: a504c760-617e-4ae6-83b4-7f7a21159f75
 new value: cc0fbdc1-2cd0-4861-ab8f-f7ebfee65680
-
-Issue with sfdx-cli update - 20220902
 
 Upgrading to the Latest Heroku Stack - 20220902
 
